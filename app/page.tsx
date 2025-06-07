@@ -34,18 +34,27 @@ import AlumniScroll from "@/components/alumni-scroll"
 export default function HomePage() {
   const [isLoading, setIsLoading] = useState(true)
   const [showScrollTop, setShowScrollTop] = useState(false)
+  const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => {
+    setIsMounted(true)
     const timer = setTimeout(() => setIsLoading(false), 2000)
 
     const handleScroll = () => {
-      setShowScrollTop(window.scrollY > 300)
+      if (typeof window !== "undefined") {
+        setShowScrollTop(window.scrollY > 300)
+      }
     }
 
-    window.addEventListener("scroll", handleScroll)
+    if (typeof window !== "undefined") {
+      window.addEventListener("scroll", handleScroll)
+    }
+
     return () => {
       clearTimeout(timer)
-      window.removeEventListener("scroll", handleScroll)
+      if (typeof window !== "undefined") {
+        window.removeEventListener("scroll", handleScroll)
+      }
     }
   }, [])
 
@@ -133,8 +142,19 @@ export default function HomePage() {
   const secondColumn = testimonials.slice(3, 6)
   const thirdColumn = testimonials.slice(6, 9)
 
+  // Don't render anything until mounted to avoid hydration issues
+  if (!isMounted) {
+    return null
+  }
+
   if (isLoading) {
     return <Loader />
+  }
+
+  const handleScrollToTop = () => {
+    if (typeof window !== "undefined") {
+      window.scrollTo({ top: 0, behavior: "smooth" })
+    }
   }
 
   return (
@@ -523,7 +543,7 @@ export default function HomePage() {
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0 }}
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            onClick={handleScrollToTop}
             className="fixed bottom-20 right-4 z-40 bg-gradient-to-r from-purple-500 to-pink-500 text-white p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 border border-white/20"
           >
             <ArrowUp className="h-6 w-6" />

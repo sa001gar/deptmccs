@@ -10,14 +10,26 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
+  const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
-    }
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
+    setIsMounted(true)
   }, [])
+
+  useEffect(() => {
+    if (!isMounted) return
+
+    const handleScroll = () => {
+      if (typeof window !== "undefined") {
+        setIsScrolled(window.scrollY > 50)
+      }
+    }
+
+    if (typeof window !== "undefined") {
+      window.addEventListener("scroll", handleScroll)
+      return () => window.removeEventListener("scroll", handleScroll)
+    }
+  }, [isMounted])
 
   const academicsDropdown = [
     { name: "Study Materials", href: "/academics/study-materials", icon: BookOpen },
@@ -50,6 +62,11 @@ export default function Navbar() {
     { name: "Gallery", href: "/gallery" },
     { name: "Feedback", href: "/feedback" },
   ]
+
+  // Don't render until mounted to avoid hydration issues
+  if (!isMounted) {
+    return null
+  }
 
   return (
     <motion.nav

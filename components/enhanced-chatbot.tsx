@@ -35,6 +35,7 @@ export default function EnhancedChatbot() {
   const [isListening, setIsListening] = useState(false)
   const [isSpeaking, setIsSpeaking] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [isMounted, setIsMounted] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const recognitionRef = useRef<any>(null)
 
@@ -45,6 +46,10 @@ export default function EnhancedChatbot() {
     { icon: HelpCircle, text: "Admission process", category: "admission" },
     { icon: Zap, text: "Placement statistics", category: "placements" },
   ]
+
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
 
   useEffect(() => {
     if (messages.length === 0 && isOpen) {
@@ -63,7 +68,7 @@ export default function EnhancedChatbot() {
   }, [messages])
 
   useEffect(() => {
-    if (typeof window !== "undefined" && "webkitSpeechRecognition" in window) {
+    if (isMounted && typeof window !== "undefined" && "webkitSpeechRecognition" in window) {
       const SpeechRecognition = (window as any).webkitSpeechRecognition
       recognitionRef.current = new SpeechRecognition()
       recognitionRef.current.continuous = false
@@ -84,24 +89,24 @@ export default function EnhancedChatbot() {
         setIsListening(false)
       }
     }
-  }, [])
+  }, [isMounted])
 
   const startListening = () => {
-    if (recognitionRef.current) {
+    if (recognitionRef.current && typeof window !== "undefined") {
       setIsListening(true)
       recognitionRef.current.start()
     }
   }
 
   const stopListening = () => {
-    if (recognitionRef.current) {
+    if (recognitionRef.current && typeof window !== "undefined") {
       recognitionRef.current.stop()
       setIsListening(false)
     }
   }
 
   const speak = (text: string) => {
-    if ("speechSynthesis" in window) {
+    if (typeof window !== "undefined" && "speechSynthesis" in window) {
       const utterance = new SpeechSynthesisUtterance(text)
       utterance.rate = 0.8
       utterance.pitch = 1
@@ -115,7 +120,7 @@ export default function EnhancedChatbot() {
   }
 
   const stopSpeaking = () => {
-    if ("speechSynthesis" in window) {
+    if (typeof window !== "undefined" && "speechSynthesis" in window) {
       speechSynthesis.cancel()
       setIsSpeaking(false)
     }
@@ -200,6 +205,11 @@ export default function EnhancedChatbot() {
 
   const handleSuggestionClick = (suggestion: string) => {
     sendMessage(suggestion)
+  }
+
+  // Don't render until mounted to avoid hydration issues
+  if (!isMounted) {
+    return null
   }
 
   return (

@@ -27,13 +27,13 @@ export default function HeroSection() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Fluid Animation Background */}
-      <SplashCursor
+      {/*<SplashCursor
         DENSITY_DISSIPATION={2.5}
         VELOCITY_DISSIPATION={1.5}
         SPLAT_FORCE={4000}
         COLOR_UPDATE_SPEED={5}
         BACK_COLOR={{ r: 0.1, g: 0.2, b: 0.4 }}
-      />
+      />*/}
 
       {/* Gradient Overlay for Text Readability */}
       <div className="absolute inset-0 bg-gradient-to-br from-black via-purple-800 to-blue-900/80 z-10" />

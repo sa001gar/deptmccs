@@ -588,25 +588,7 @@ export default function AboutPage() {
         </div>
       </motion.section>
 
-      {/* Interactive Timeline */}
-      <motion.section
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true }}
-        className="py-16 bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900"
-      >
-        <div className="container mx-auto px-4 mb-8">
-          <h2 className="text-5xl font-bold text-center mb-6 text-white">Interactive Journey Timeline</h2>
-          <p className="text-center text-purple-200 max-w-2xl mx-auto text-lg">
-            Explore our department's evolution through an interactive orbital timeline. Click on any milestone to
-            discover connections and detailed insights.
-          </p>
-        </div>
-        <div className="h-screen">
-          <RadialOrbitalTimeline timelineData={timelineData} />
-        </div>
-      </motion.section>
+      
 
       {/* Call to Action */}
       <motion.section

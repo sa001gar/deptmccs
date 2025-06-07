@@ -8,7 +8,6 @@ import { cn } from "@/lib/utils"
 import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
 import EnhancedChatbot from "@/components/enhanced-chatbot"
-import { SplashCursor } from "@/components/ui/splash-cursor"
 
 export default function SyllabusPage() {
   const [selectedSemester, setSelectedSemester] = useState(1)
@@ -102,7 +101,7 @@ export default function SyllabusPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 relative">
-      <SplashCursor />
+      
       <Navbar />
 
       {/* Hero Section */}

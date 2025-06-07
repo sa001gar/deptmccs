@@ -29,7 +29,7 @@ import Chatbot from "@/components/chatbot"
 import Loader from "@/components/loader"
 import HeroSection from "@/components/hero-section"
 import { TestimonialsColumn } from "@/components/ui/testimonials-columns-1"
-import AlumniScroll from "@/components/alumni-scroll"
+import InfiniteScrollAlumni from "@/components/infinite-scroll-alumni"
 
 export default function HomePage() {
   const [isLoading, setIsLoading] = useState(true)
@@ -269,7 +269,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <AlumniScroll />
+          <InfiniteScrollAlumni />
         </div>
       </motion.section>
 
